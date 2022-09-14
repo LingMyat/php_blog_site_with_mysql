@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    require("../config/config.php");
+    require("./config/config.php");
     $query1 = "SELECT email FROM users";
     $result = mysqli_query($dbConnection,$query1);
     $table = mysqli_fetch_all($result,MYSQLI_ASSOC);
@@ -21,7 +21,6 @@
                         $_SESSION['user_role'] =  $table2[0]['role'];
                         $_SESSION['user_id'] = $table2[0]['id'];
                         $_SESSION['login'] = time();
-                        $_SESSION['username'] = $table2[0]['name'];
                         header("location:./index.php");
                 }else {
                     $errPassword = "your password is wrong please try again";
@@ -43,11 +42,11 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="./plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="./dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -101,13 +100,11 @@
 </div>
 <!-- /.login-box -->
 </div>
-<!-- /.login-box -->
-
 <!-- jQuery -->
-<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="./plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
+<script src="./dist/js/adminlte.min.js"></script>
 </body>
 </html>

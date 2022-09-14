@@ -1,34 +1,16 @@
 <?php 
+require "./config/config.php";
 session_start();
-
+include_once("./header.php");
+if (empty($_GET['id']) && empty($_GET['pageNo'])) {
+  echo "<script>window.location.href='index.php'</script>";
+}
+$pageNo = $_GET['pageNo'];
+$currentId = $_GET['id'];
+$query = "SELECT * FROM posts WHERE id = '$currentId'";
+$result = mysqli_query($dbConnection,$query);
+$table = mysqli_fetch_all($result,MYSQLI_ASSOC);
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Widgets</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <style>
-    * {
-      scroll-behavior: smooth;
-    }
-  </style>
-</head>
-<body class="hold-transition sidebar-mini">
-  
-    <!-- Content Header (Page header) -->
-
-    <!-- Main content -->
     <div class="row">
           <div class="col">
             <!-- Box Comment -->
@@ -37,22 +19,27 @@ session_start();
                 <div class="user-block">
                   <img class="img-circle" src="./image/mygf (2).jpg" alt="User Image">
                   <span class="username"><a href=""> Ling Myat Aung </a></span>
-                  <span class="description">Shared publicly - 7:30 PM Today</span>
+                  <span class="description">Shared publicly - <?php echo $table[0]['created']; ?></span>
                 </div>
 
                 <div class=" card-tools">
-                    <a href="./index.php" class=" btn btn-success">Back to blogs</a>
+                    <a href="./index.php?pageNo=<?php echo $pageNo ?>" class=" btn btn-success">Back to blogs</a>
                 </div>
             
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <img class="img-fluid pad" src="./image/Screenshot (23).png" alt="Photo">
-
-                <p>I took this photo this morning. What do you guys think?</p>
-                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>
-                <button type="button" class="btn btn-default btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
-                <span class="float-right text-muted">127 likes - 3 comments</span>
+                <div class="row">
+                <img class="img-fluid m-auto col-lg-10" src="./image/<?Php echo $table[0]['image']; ?>" alt="Photo">
+                </div>
+                
+                  <div class=" mt-3">
+                  <h2 class="">
+                    <?php echo $table[0]['title']; ?>
+                  </h2>
+                <p><?php echo $table[0]['content']; ?></p>
+                  </div>
+                
               </div>
               <!-- /.card-body -->
               <div class="card-footer card-comments">
@@ -114,28 +101,6 @@ session_start();
   </div>
   <!-- /.content-wrapper -->
 
-  <footer class="main-footer" style="margin-left:0 !important ;">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery -->
-<script src="./plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-</body>
-</html>
+  <?php 
+  include_once("./footer.php");
+  ?>

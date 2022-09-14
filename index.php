@@ -1,43 +1,19 @@
 <?php
-require "./config/config.php"
+require "./config/config.php";
+session_start();
+if (empty($_SESSION['user_id']) && empty($_SESSION['login']) && empty($_SESSION['user_role']) && empty($_SESSION['username'])) {
+  header("location:./login.php");
+}
+if ($_SESSION['user_role'] == 1) {
+  echo "<script>window.location.href='./admin/index.php'</script>";
+}
+include_once("./header.php");
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Widgets</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <style>
-    * {
-      scroll-behavior: smooth;
-    }
-  </style>
-</head>
-
-<body class="hold-transition sidebar-mini">
-  <div class="wrapper">
-
-    <div class="">
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <div class="container-fluid">
-          <h2 class=" text-center">Blog Posts</h2>
-        </div><!-- /.container-fluid -->
-      </section>
-
-      <!-- Main content -->
+    
+      
       <div class=" container-fluid">
+      <h2 class=" text-center text-primary">Blog Posts</h2>
         <div class="row">
           <?php
           if (!empty($_GET['pageNo'])) {
@@ -51,12 +27,33 @@ require "./config/config.php"
           $result = mysqli_query($dbConnection, $query);
           $rawTable = mysqli_fetch_all($result, MYSQLI_ASSOC);
           $totalPages = ceil(count($rawTable) / $numberOfBlogs);
+
+          if (isset($_POST['search'])) {
+
+            $pageNo = 0;
+            $searchValue = $_POST['searchValue'];
+            $query3 = "SELECT * FROM posts WHERE title LIKE '%$searchValue%' ORDER BY id DESC";
+            $result3 = mysqli_query($dbConnection, $query3);
+            $table = mysqli_fetch_all($result3, MYSQLI_ASSOC);
+          } else {
+
+
           $query2 = "SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$numberOfBlogs";
           $result2 = mysqli_query($dbConnection, $query2);
           $table = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+          }
+
+          
           foreach ($table as $row) {
           ?>
             <div class="col-md-4">
+            <a href="./detail.php?id=<?php echo $row['id']; ?>&pageNo=<?php
+             if ($pageNo < 1) {
+                echo 1;
+             }else{
+              echo $pageNo;
+             }
+             ?>" class=" ">
               <div class="card card-widget">
                 <div class="card-body">
                   <img class="img-fluid pad w-100" style="" src="./image/<?php echo $row['image']; ?>" alt="Photo">
@@ -65,6 +62,7 @@ require "./config/config.php"
                 <h4 class="  text-md-start text-center"><?php echo $row['title']; ?></h4>
                 </div>
               </div>
+              </a>
             </div>
           <?php
           }
@@ -105,24 +103,6 @@ require "./config/config.php"
     <i class="fas fa-chevron-up"></i>
   </a>
 
-
-
-  <footer class="main-footer" style="margin-left:0 !important ;">
-
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2022-2023 <a href="https://adminlte.io">Ling Myat Aung</a>.</strong> All rights reserved.
-  </footer>
-
-  <!-- jQuery -->
-  <script src="./plugins/jquery/jquery.min.js"></script>
-  <!-- Bootstrap 4 -->
-  <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="dist/js/adminlte.min.js"></script>
-  <!-- AdminLTE for demo purposes -->
-  <script src="dist/js/demo.js"></script>
-</body>
-
-</html>
+<?php 
+include_once("./footer.php");
+?>

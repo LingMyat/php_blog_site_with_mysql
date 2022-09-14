@@ -1,8 +1,11 @@
 <?php
-session_start();
 require("../config/config.php");
-if (empty($_SESSION['user_id']) && empty($_SESSION['login'])) {
+session_start();
+if (empty($_SESSION['user_id']) && empty($_SESSION['login']) && empty($_SESSION['user_role']) && empty($_SESSION['username'])) {
   header("location:./login.php");
+}
+if ($_SESSION['user_role'] == 0) {
+  echo "<script>window.location.href='../index.php'</script>";
 }
 include_once("./header.php");
 if (isset($_GET['id'])) {
