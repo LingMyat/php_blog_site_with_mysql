@@ -20,6 +20,7 @@
                 if ($password === $table2[0]['password'] ) {
                         $_SESSION['user_role'] =  $table2[0]['role'];
                         $_SESSION['user_id'] = $table2[0]['id'];
+                        $_SESSION['user_name'] = $table2[0]['name'];
                         $_SESSION['login'] = time();
                         header("location:./index.php");
                 }else {

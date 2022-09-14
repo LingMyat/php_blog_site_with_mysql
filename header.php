@@ -1,3 +1,11 @@
+<?php 
+require("./config/config.php");
+$currentUserId = $_SESSION['user_id'];
+$currentUserQuery = "SELECT * FROM users WHERE id = '$currentUserId'";
+$currentUserResult = mysqli_query($dbConnection,$currentUserQuery);
+$currentUserTable = mysqli_fetch_all($currentUserResult,MYSQLI_ASSOC);
+
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -59,7 +67,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </li>
     </ul>
     <ul class="navbar-nav">
-      <a href="./admin/logout.php" class="btn btn-primary">Logout</a>
+      <a href="./logout.php" class="btn btn-primary">Logout</a>
     </ul>
     
   </nav>
@@ -78,10 +86,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="./image/user (3).jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="./image/<?php echo$currentUserTable[0]["image"]; ?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?php echo$_SESSION['username'] ?></a>
+          <a href="#" class="d-block"><?php echo$currentUserTable[0]["name"]; ?></a>
         </div>
       </div>
 

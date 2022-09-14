@@ -95,7 +95,7 @@
         </div>
       </form>
       <p class="mb-0">
-        <a href="register.php" class="text-center">Register a new membership</a>
+        <a href="../register.php" class="text-center">Register a new membership</a>
       </p>
   </div>
 </div>
