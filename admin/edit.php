@@ -20,7 +20,7 @@
        
         empty($_POST['title'])?$errTitle="this field is require!":$title = $_POST['title'];
         empty($_POST['content'])?$errContent="this field is require!":$content = $_POST['content'];
-        empty($_FILES['image']['name'])?$errImage="this field is require!":$image = $_FILES['image']['name'];
+        empty($_FILES['image']['name'])?$image= $currentImage :$image = $_FILES['image']['name'];
 
 
         if ($content <>'' && $title<>'' && $image <> '') {
@@ -78,7 +78,6 @@
                 <img style="width: 230px; height: auto;" src="../image/<?php echo$currentImage ?>" alt="" srcset="">
                  <label for="formFile" class="form-label ">current image</label>
                 <input class=" form-control mt-2" name="image" type="file" id="formFile">
-                <span class=" text-danger"><?php echo $errImage?></span>
                 </div>
                 <div class="col d-flex justify-content-between">
                         <a href="./index.php" class="btn text-white btn-success">Cancel</a>

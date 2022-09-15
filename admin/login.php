@@ -17,7 +17,7 @@
                 $query2 = "SELECT * FROM users WHERE email='$email'";
                 $result2 = mysqli_query($dbConnection,$query2);
                 $table2 = mysqli_fetch_all($result2,MYSQLI_ASSOC);
-                if ($password === $table2[0]['password'] ) {
+                if (password_verify($password,$table2[0]['password'])) {
                         $_SESSION['user_role'] =  $table2[0]['role'];
                         $_SESSION['user_id'] = $table2[0]['id'];
                         $_SESSION['login'] = time();

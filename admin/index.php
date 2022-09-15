@@ -55,9 +55,7 @@ if (isset($_GET['id'])) {
                 $totalPages = ceil(count($rawtable) / $numberOfBlog);
 
                 if (isset($_POST['search'])) {
-
-                  $pageno = 0;
-                  $searchValue = $_POST['searchValue'];
+                    $searchValue = $_POST['searchValue'];
                   $query4 = "SELECT * FROM posts WHERE title LIKE '%$searchValue%' ORDER BY id DESC";
                   $result4 = mysqli_query($dbConnection, $query4);
                   $table = mysqli_fetch_all($result4, MYSQLI_ASSOC);

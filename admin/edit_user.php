@@ -7,7 +7,7 @@
       $author_id = $_SESSION['user_id'];
     }
     include_once("./header.php");
-    $errName = $errEmail =$errImage = $errPassword = $name = $email = $password = $image = '';
+    $errName = $errEmail = $name = $email = $password = $image = '';
     $currentId = $_GET['id'];
 
     $query = "SELECT * FROM users WHERE id = '$currentId' ";
@@ -27,22 +27,28 @@
        
         empty($_POST['name'])?$errName="this field is require!":$name = $_POST['name'];
         empty($_POST['email'])?$errEmail="this field is require!":$email = $_POST['email'];
-        empty($_POST['password'])?$errPassword="this field is require!":$password = $_POST['password'];
-        empty($_FILES['image']['name'])?$errImage="this field is require!":$image = $_FILES['image']['name'];
+        $password = $_POST['password'];
+        empty($_FILES['image']['name'])?$image = $currentImage :$image = $_FILES['image']['name'];
         if ($_POST['role']== 'Admin') {
             $role = 1;
         } else {
             $role = 0;
         }
 
-        if ($name <>'' && $email<>''&& $password<>'' && $image <> '') {
+        if ($name <>'' && $email<>'' && $image <> '') {
           $file = '../image/'.$image;
           $fileType = pathinfo($file,PATHINFO_EXTENSION);
           if ($fileType <>'png' && $fileType <> 'jpg' && $fileType <> "jpeg") {
             $errImage = 'make sure your image type is png, jpg or jpeg';
           } else {
             move_uploaded_file($_FILES['image']['tmp_name'],$file);
-            $query = "UPDATE users SET name='$name',email='$email',password='$password',role='$role', image='$image' WHERE id ='$currentId'";
+            
+            if ($password == "") {
+              $finalPsw = $currentPassword;
+            }else {
+              $finalPsw = password_hash($password,PASSWORD_DEFAULT);
+            }
+            $query = "UPDATE users SET name='$name',email='$email',password='$finalPsw',role='$role', image='$image' WHERE id ='$currentId'";
             mysqli_query($dbConnection,$query);
             echo "<script>window.location.href='user_list.php'</script>";
           } 
@@ -91,10 +97,8 @@
                     <label for="exampleInputPassword">Password</label>
                     <input type="text" value="<?php if (isset($_POST['save'])) {
                         echo $password;
-                    }else{
-                        echo $currentPassword;
                     } ?>" name="password" class="form-control" id="exampleInputPassword" >
-                    <span class=" text-danger"><?php echo $errPassword?></span>
+                    
                   </div>
 
                   <div class="form-group">
@@ -113,7 +117,6 @@
                 <img style="width: 230px; height: auto;" src="../image/<?php echo$currentImage ?>" alt="" srcset="">
                  <label for="formFile" class="form-label ">current image</label>
                 <input class=" form-control mt-2" name="image" type="file" id="formFile">
-                <span class=" text-danger"><?php echo $errImage?></span>
                 </div>
                 <div class="col d-flex justify-content-between">
                         <a href="./user_list.php" class="btn text-white btn-success">Cancel</a>

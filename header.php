@@ -30,15 +30,56 @@ scratch. This page gets rid of all links and provides the needed markup only.
     * {
       scroll-behavior: smooth;
     }
+    .parent {
+      position: relative;
+      
+    }
+    .child {
+      display: flex;
+      padding: 0;
+      justify-content: center;
+      align-items: center;
+      width: 15px;
+      height: 15px;
+      position: absolute;
+      bottom: -5px;
+      right: -3px;
+      border-radius: 50%;
+      border: 1px solid #fff;
+      cursor: pointer;
+    }
+
+    .profileUpdateAlert{
+      width: 350px;
+      position: absolute;
+      left: 10px;
+      top: 0;
+      z-index: 1;
+      opacity: 1;
+    }
+    .addBtn{
+      height: 25px;
+      width: 25px;
+    }
   </style>
 </head>
 
-
+<?php 
+if (isset($_POST['next'])) {
+  $newProfile = $_FILES['profile']['name'];
+  $path = "./image/".$newProfile;
+  move_uploaded_file($_FILES['profile']['tmp_name'],$path);
+  $updateProfileId = $currentUserTable[0]["id"];
+  $updateProfileQuery = "UPDATE users SET image = '$newProfile' WHERE id = '$updateProfileId'";
+  mysqli_query($dbConnection,$updateProfileQuery);
+  echo"<script>window.location.href='./index.php'</script>";
+}
+?>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header mb-3 d-flex justify-content-between navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header mb-3 d-flex justify-content-between navbar navbar-expand navbar-white navbar-light position-relative">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -69,7 +110,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <ul class="navbar-nav">
       <a href="./logout.php" class="btn btn-primary">Logout</a>
     </ul>
-    
+    <!-- Alert update profile picture -->
+    <div class=" profileUpdateAlert card card-primary <?php 
+    if (isset($_POST['updateBtn'])) {
+          echo "d-block";
+        }else{
+          echo "d-none";
+        }
+        if (isset($_POST['back'])) {
+          echo " "."d-none";
+        }
+        ?> ">
+        <div class="card-header p-3">
+          Are you sure! want to change your profile?
+        </div>
+        <div class="card-body">
+          <form action="" class=" " method="post" enctype="multipart/form-data">
+          <input type="file" name="profile" >
+            <div class=" d-flex justify-content-between mt-3">
+            <input class="btn btn-secondary " name="back" type="submit" value="Back">
+            <input class="btn btn-primary" name="next" type="submit" value="Next">
+            </div>
+          </form>
+        </div>
+      </div>
   </nav>
   <!-- /.navbar -->
 
@@ -85,10 +149,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="./image/<?php echo$currentUserTable[0]["image"]; ?>" class="img-circle elevation-2" alt="User Image">
+        <div class="image p-0 parent">
+          <img src="./image/<?php echo$currentUserTable[0]["image"]; ?>" class="img-circle elevation-2" style="width:46px; height:46px;" alt="User Image">
+
+          <div class="child">
+            
+          <form action="" method="post" class=" p-0" >
+            <button class="addBtn d-flex justify-content-center align-items-center rounded-circle p-0" name="updateBtn" type="submit"><i class="fas fa-camera text-info p-0"></i></button>
+          </form>
+          </div>
         </div>
-        <div class="info">
+        <div class="info d-flex justify-content-center align-items-center">
           <a href="#" class="d-block"><?php echo$currentUserTable[0]["name"]; ?></a>
         </div>
       </div>
@@ -105,6 +176,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </div>
 
+      
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -127,3 +199,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.sidebar -->
   </aside>
   <div class="content-wrapper">
+
+    
+  

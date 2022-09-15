@@ -50,7 +50,7 @@ $table3 = mysqli_fetch_all($result3,MYSQLI_ASSOC);
                 </div>
                 
                   <div class=" mt-3">
-                  <h3 class=" mb-3">
+                  <h3 class=" mb-3" style="cursor:pointer;">
                     <?php echo $table[0]['title']; ?>
                   </h3>
                 <p><?php echo $table[0]['content']; ?></p>

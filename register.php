@@ -8,7 +8,8 @@
         empty($_POST['password'])?$errPassword="this field is require!":$password = $_POST['password'];
         empty($_POST['name'])?$errName="this field is require!":$name = $_POST['name'];
         if ($email<>'' && $password<>"" && $name <> "") {
-            $query = "INSERT INTO users (name,email,password,role) VALUES ('$name','$email','$password',0)";
+            $hashPassword = password_hash($password,PASSWORD_DEFAULT);
+            $query = "INSERT INTO users (name,email,password,role) VALUES ('$name','$email','$hashPassword',0)";
             mysqli_query($dbConnection,$query);
             header("location:login.php");
         }
