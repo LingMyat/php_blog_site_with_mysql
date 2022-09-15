@@ -11,7 +11,7 @@ if (empty($_GET['id']) && empty($_GET['pageNo'])) {
 $pageNo = $_GET['pageNo'];
 $currentId = $_GET['id'];
 $currentUser = $currentUserTable[0]["name"];
-$query = "SELECT * FROM posts WHERE id = '$currentId'";
+$query = "SELECT * FROM posts WHERE id = '$currentId' ORDER BY id DESC";
 $result = mysqli_query($dbConnection,$query);
 $table = mysqli_fetch_all($result,MYSQLI_ASSOC);
 $currentBlogId = $table[0]['id'];
@@ -23,7 +23,7 @@ if (!empty($_POST['comment'])) {
       echo "<script>window.location.href='./detail.php?id=$currentId&pageNo=$pageNo'</script>";
 }
 // For comments show query
-$query3 ="SELECT * FROM comments WHERE post_id = '$currentId' ORDER BY id DESC";
+$query3 ="SELECT * FROM comments WHERE post_id = '$currentId'";
 $result3 = mysqli_query($dbConnection,$query3);
 $table3 = mysqli_fetch_all($result3,MYSQLI_ASSOC);
 ?>
@@ -50,7 +50,7 @@ $table3 = mysqli_fetch_all($result3,MYSQLI_ASSOC);
                 </div>
                 
                   <div class=" mt-3">
-                  <h3 class=" mb-3" style="cursor:pointer;">
+                  <h3 class=" mb-3" >
                     <?php echo $table[0]['title']; ?>
                   </h3>
                 <p><?php echo $table[0]['content']; ?></p>

@@ -150,7 +150,11 @@ if (isset($_POST['next'])) {
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image p-0 parent">
-          <img src="./image/<?php echo$currentUserTable[0]["image"]; ?>" class="img-circle elevation-2" style="width:46px; height:46px;" alt="User Image">
+          <img src="./image/<?php if (empty($currentUserTable[0]["image"])) {
+            echo"user (3).jpg";
+          }else {
+            echo$currentUserTable[0]["image"];
+          } ?>" class="img-circle elevation-2" style="width:46px; height:46px;" alt="User Image">
 
           <div class="child">
             
@@ -188,6 +192,15 @@ if (isset($_POST['next'])) {
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Blogs
+                
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="./user_edit.php" class="nav-link">
+              <i class="nav-icon fas fa-user-cog"></i>
+              <p>
+                Update Your Info
                 
               </p>
             </a>
