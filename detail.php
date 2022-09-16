@@ -46,7 +46,7 @@ $table3 = mysqli_fetch_all($result3,MYSQLI_ASSOC);
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
-                <img class="img-fluid m-auto col-lg-10" src="./image/<?Php echo $table[0]['image']; ?>" alt="Photo">
+                <img class="img-fluid m-auto col-lg-10" src="./image/<?Php echo $table[0]['image']; ?>" alt="BlogPhoto">
                 </div>
                 
                   <div class=" mt-3">
@@ -61,24 +61,24 @@ $table3 = mysqli_fetch_all($result3,MYSQLI_ASSOC);
               <div class="card-footer card-comments">
                 <h3 class=" mb-3">Comments</h3>
                   <?php 
-                  if (!$table3 == []) {
+                  if (!empty($table3)) {
+                    
                     foreach($table3 as $row){
                       $currentHuman = $row['name'];
-                      $queryTakeImage = "SELECT image FROM users where name = '$currentHuman'";
+                      $queryTakeImage = "SELECT * FROM users where name = '$currentHuman'";
                       $result4 = mysqli_query($dbConnection,$queryTakeImage);
-                      $imgArr = mysqli_fetch_all($result4,MYSQLI_ASSOC);
+                      $table4 = mysqli_fetch_all($result4,MYSQLI_ASSOC);
+                      
 
                   ?>
                     <div class="card-comment">
-                  <img class="img-circle img-sm" src="./image/<?php echo $imgArr[0]['image'] ?>" alt="User Image">
+                  <img class="img-circle img-sm" src="./image/<?php echo $table4[0]['image'] ?>" alt="User Image">
                   <div class="comment-text">
                     <span class="username">
-                    <?php echo$row['name']; ?>
+                    <?php echo $table4[0]['name']; ?>
                       <span class="text-muted float-right"><?php echo$row['created']; ?></span>
                     </span>
                     <?php echo$row['content']; ?>
-                    <!-- It is a long established fact that a reader will be distracted
-                    by the readable content of a page when looking at its layout. -->
                   </div>
                 </div>
                   <?php

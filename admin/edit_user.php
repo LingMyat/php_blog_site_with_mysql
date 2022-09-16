@@ -48,8 +48,11 @@
             }else {
               $finalPsw = password_hash($password,PASSWORD_DEFAULT);
             }
+            
             $query = "UPDATE users SET name='$name',email='$email',password='$finalPsw',role='$role', image='$image' WHERE id ='$currentId'";
+            $query2 = "UPDATE comments SET name='$name' WHERE name = '$currentName'";
             mysqli_query($dbConnection,$query);
+            mysqli_query($dbConnection,$query2);
             echo "<script>window.location.href='user_list.php'</script>";
           } 
          
